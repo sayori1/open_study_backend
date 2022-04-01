@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { Tag } from './tag.schema';
 
 export type CourseDocument = Course & Document;
 
@@ -27,15 +28,8 @@ export class Course {
   @Prop()
   category: string[];
 
-  @Prop({
-    type: [
-      {
-        text: { type: String, default: '' },
-        mark: { type: Number, default: 5.0 },
-      },
-    ],
-  })
-  comments: [];
+  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]})
+  comments: Comment[];
 
   @Prop({ type: Number, default: 0 })
   price: number;
@@ -49,8 +43,8 @@ export class Course {
   @Prop({ type: Number, default: 5.0 })
   rating: number;
 
-  @Prop({ type: [{ type: String }] })
-  tags: string[];
+  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]})
+  tags: Tag[];
 
   @Prop({ type: [{ type: String }] })
   authors: string[];

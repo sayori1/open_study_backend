@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import mongoose from 'mongoose';
 import { CourseService } from './course.service';
+import { CreateCommentDto } from './dto/create-comment.dto';
 import { CreateCourseDto } from './dto/create-course.dto';
 
 @Controller('/course')
@@ -35,8 +36,18 @@ export class CourseController {
     return this.courseService.getOne(id);
   }
 
+  @Get(':tag')
+  getByTag(@Query('tag') tag: string) {
+    return this.courseService.getByTag(tag);
+  }
+
   @Delete(':id')
   delete(@Query('id') id: mongoose.Schema.Types.ObjectId) {
     return this.courseService.delete(id);
+  }
+
+  @Post('/comment')
+  addComment(@Body() dto: CreateCommentDto) {
+    return this.courseService.addComment(dto);
   }
 }
