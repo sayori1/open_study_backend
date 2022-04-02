@@ -19,16 +19,7 @@ export class Course {
   @Prop({ type: {} })
   lessons: object;
 
-  @Prop()
-  contentRaw: string[];
-
-  @Prop()
-  metadataRaw: [];
-
-  @Prop()
-  category: string[];
-
-  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}]})
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];
 
   @Prop({ type: Number, default: 0 })
@@ -43,7 +34,7 @@ export class Course {
   @Prop({ type: Number, default: 5.0 })
   rating: number;
 
-  @Prop({type: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tag'}]})
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }] })
   tags: Tag[];
 
   @Prop({ type: [{ type: String }] })

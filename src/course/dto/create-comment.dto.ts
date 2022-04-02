@@ -1,5 +1,5 @@
 export class CreateCommentDto {
-  readonly username;
+  readonly userId;
   readonly text;
   readonly courseId;
   readonly mark;

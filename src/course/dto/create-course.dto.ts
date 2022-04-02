@@ -3,9 +3,6 @@ export class CreateCourseDto {
   readonly shortDescription;
   readonly description;
   readonly lessons;
-  readonly contentRaw;
-  readonly metadataRaw;
-  readonly category;
   readonly comments;
   readonly tags;
   readonly price;
