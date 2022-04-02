@@ -19,7 +19,7 @@ export class AuthService {
 
   async login(userDto: CreateUserDto) {
     const user = await this.validateUser(userDto);
-    return this.generateToken(user);
+    return { token: this.generateToken(user), user };
   }
 
   async registration(userDto: CreateUserDto) {
@@ -46,18 +46,21 @@ export class AuthService {
       ...userDto,
       password: hashPassword,
     });
-    return this.generateToken(user);
+    return { token: this.generateToken(user), user };
   }
 
-  private async generateToken(user: User) {
+  private generateToken(user: User) {
     const payload = { email: user.email, roles: user.roles };
-    return {
-      token: this.jwtService.sign(payload),
-    };
+    return this.jwtService.sign(payload);
   }
 
   private async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.getUserByEmail(userDto.email);
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Данного пользователя не существует',
+      });
+    }
     const passwordEquals = await bcrypt.compare(
       userDto.password,
       user.password,

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -26,45 +27,41 @@ export class CourseController {
     return this.courseService.create(dto);
   }
 
-  @Roles('USER')
-  @UseGuards(RolesGuard)
   @Get()
-  getAll(@Query('count') count: number, @Query('page') page: number) {
+  getAll(@Param('count') count: number, @Param('page') page: number) {
     return this.courseService.getAll(count, page);
   }
 
-  @Roles('USER')
-  @UseGuards(RolesGuard)
   @Get('/search')
-  search(@Query('query') query: string) {
+  search(@Param('query') query: string) {
     return this.courseService.search(query);
   }
 
-  @Roles('USER')
-  @UseGuards(RolesGuard)
   @Get(':id')
   getOne(@Param('id') id: mongoose.Schema.Types.ObjectId) {
     return this.courseService.getOne(id);
   }
 
-  @Roles('USER')
-  @UseGuards(RolesGuard)
-  @Get(':tag')
-  getByTag(@Query('tag') tag: string) {
+  @Get('/tag/:tag')
+  getByTag(@Param('tag') tag: string) {
     return this.courseService.getByTag(tag);
   }
 
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
   @Delete(':id')
-  delete(@Query('id') id: mongoose.Schema.Types.ObjectId) {
+  delete(@Param('id') id: mongoose.Schema.Types.ObjectId) {
     return this.courseService.delete(id);
   }
 
-  @Roles('USER')
-  @UseGuards(RolesGuard)
   @Post('/comment')
   addComment(@Body() dto: CreateCommentDto) {
     return this.courseService.addComment(dto);
+  }
+
+  @Put(':id')
+  saveCourse(
+    @Param('id') id: mongoose.Schema.Types.ObjectId,
+    @Body() dto: CreateCourseDto,
+  ) {
+    return this.courseService.save(id, dto);
   }
 }

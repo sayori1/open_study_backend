@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Course, CourseDocument } from './schemas/course.schema';
 import { Model } from 'mongoose';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { Tag, TagDocument } from './schemas/tag.schema';
 import { Comment, CommentDocument } from './schemas/comment.schema';
 import { CreateCommentDto } from './dto/create-comment.dto';
 
@@ -11,7 +10,6 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 export class CourseService {
   constructor(
     @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
-    @InjectModel(Tag.name) private tagModel: Model<TagDocument>,
     @InjectModel(Comment.name) private commentModel: Model<CommentDocument>,
   ) {}
 
@@ -36,7 +34,7 @@ export class CourseService {
   }
 
   async getOne(id) {
-    const course = await this.courseModel.findById(id);
+    const course = await this.courseModel.findById(id).populate('lessons');
     return course;
   }
 
@@ -60,5 +58,10 @@ export class CourseService {
     course.comments.push(comment._id);
     await course.save();
     return comment;
+  }
+
+  async save(id, dto: CreateCourseDto) {
+    let course = await this.courseModel.findByIdAndUpdate(id, { $set: dto });
+    return course;
   }
 }

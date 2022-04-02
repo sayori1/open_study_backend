@@ -21,7 +21,7 @@ export class User {
   @Prop()
   banReason: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId }] })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserCourse' }] })
   userCourses: UserCourse[];
 
   @Prop()

@@ -5,10 +5,15 @@ import { BanUserDto } from './dto/ban-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { Model } from 'mongoose';
+import { UserCourseDto } from './dto/create-usercourse.dto';
+import { UserCourse } from './schemas/usercourse.schema';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(UserCourse.name) private userCoursesModel: Model<UserDocument>,
+  ) {}
 
   async createUser(dto: CreateUserDto) {
     const user = await this.userModel.create(dto);
@@ -63,6 +68,16 @@ export class UsersService {
     user.banned = true;
     user.banReason = dto.banReason;
     await user.save();
+    return user;
+  }
+
+  async enrollCourse(dto: UserCourseDto) {
+    let userCourse = await this.userCoursesModel.create(dto);
+
+    console.log(userCourse);
+    let user = await this.userModel.findById(dto.user);
+    user.userCourses.push(dto);
+    user.save();
     return user;
   }
 }

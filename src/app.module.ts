@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { CourseModule } from './course/course.module';
 import { FileModule } from './file/file.module';
-import { LessonController } from './lesson/lesson.controller';
 import { LessonModule } from './lesson/lesson.module';
 import { UsersModule } from './users/users.module';
 
@@ -16,6 +15,5 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     FileModule,
   ],
-  controllers: [LessonController],
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
-export class CreateLessonDto{
-    readonly heading;
-    readonly name;
-    readonly pages;
+export class CreateLessonDto {
+  readonly heading;
+  readonly name;
+  readonly pages;
+  readonly courseId;
 }
